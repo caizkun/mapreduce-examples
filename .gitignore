@@ -1,8 +1,15 @@
+# MacOS file
+.DS_Store
+
 # Compiled class file
 *.class
 
 # Log file
 *.log
+
+# IntelliJ files
+*.iml
+*.idea
 
 # BlueJ files
 *.ctxt

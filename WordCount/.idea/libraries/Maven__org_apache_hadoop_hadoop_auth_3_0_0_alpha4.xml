@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.hadoop:hadoop-auth:3.0.0-alpha4">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/hadoop/hadoop-auth/3.0.0-alpha4/hadoop-auth-3.0.0-alpha4.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/hadoop/hadoop-auth/3.0.0-alpha4/hadoop-auth-3.0.0-alpha4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/hadoop/hadoop-auth/3.0.0-alpha4/hadoop-auth-3.0.0-alpha4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

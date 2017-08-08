@@ -9,7 +9,7 @@
 
 # IntelliJ files
 *.iml
-*.idea
+.idea/
 
 # BlueJ files
 *.ctxt

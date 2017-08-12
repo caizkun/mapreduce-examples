@@ -9,7 +9,7 @@ Mapper: fetch the file name of each record and split the record into words
 
 Reducer: sum up the count for each word
 - input: <word, (file1, file2, file1, ...)>
-- output: <word, (file1=count1,file2=count2, ...)>
+- output: <word, (file1=count1, file2=count2, ...)>
 
 
 #### Note 

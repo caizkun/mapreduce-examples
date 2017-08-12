@@ -1,0 +1,8 @@
+ai	{sample1.txt=1, sample2.txt=1}
+big	{sample1.txt=1}
+data	{sample1.txt=1}
+finally	{sample1.txt=1, sample2.txt=1}
+hello	{sample2.txt=1}
+i	{sample1.txt=1, sample2.txt=1}
+love	{sample1.txt=1, sample2.txt=1}
+world	{sample2.txt=1}

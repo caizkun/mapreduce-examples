@@ -1,6 +1,7 @@
-## WordCount
+## Word Count
 
-Problem: count the frequency of words in documents
+Problem: count the frequency of words in files
+
 
 Mapper: split each record (line) into words
 - input: <offset, line>

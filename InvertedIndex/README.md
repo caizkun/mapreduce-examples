@@ -18,5 +18,5 @@ In this example, the driver implements the Tool interface and calls ToolRunner's
 Although it is unnecessary in this example, this driver format is very useful for customizing Configuration at run time by supplying command-line arguments.
 
 Reference: 
-- *Hadoop: The Definitive Guid* (4th edition) by Tom White, p.148-152
+- *Hadoop: The Definitive Guide* (4th edition) by Tom White, p.148-152
 - [Tool, ToolRunner in org.apache.hadoop.util](https://hadoop.apache.org/docs/stable/api/)

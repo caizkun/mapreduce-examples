@@ -16,3 +16,5 @@ Reducer: sum up the count for each word
 In this example, the driver implements the Tool interface and calls ToolRunner's static run() method to work in conjunction with GenericOptionsParser, which can parse the generic hadoop command-line arguments and modifies the Configuration of the Tool. 
 
 Although it is unnecessary in this example, this driver format is very useful for customizing Configuration at run time by supplying command-line arguments.
+
+Reference: [Tool, ToolRunner in org.apache.hadoop.util](https://hadoop.apache.org/docs/stable/api/)

@@ -19,7 +19,7 @@
             input: <offset, line>  
             output: <row, *M*[row][col]**v*[col]> 
         
-        - Reducer: sum up all the cell product to the final value for each vector row
+        - Reducer: sum up all the cell product to the final value for each vector row  
             input: <row, (*M*[row][col1]**v*[col1], *M*[row][col2]**v*[col2], ...)>  
             output: <row, *M*[row][col1]**v*[col1] + *M*[row][col2]**v*[col2] + ...>
         

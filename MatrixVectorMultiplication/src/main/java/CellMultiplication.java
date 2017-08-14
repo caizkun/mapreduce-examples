@@ -6,7 +6,6 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.chain.ChainMapper;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -68,7 +67,6 @@ public class CellMultiplication extends Configured implements Tool {
         }
     }
 
-    @Override
     public int run(String[] args) throws Exception {
         if (args.length != 3) {
             System.err.printf("Usage: %s [generic options] <input> <output>\n", getClass().getSimpleName());
@@ -84,11 +82,8 @@ public class CellMultiplication extends Configured implements Tool {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
 
-        // chain Mappers
-        ChainMapper.addMapper(job, MatrixReaderMapper.class, LongWritable.class, Text.class, Text.class, Text.class, conf);
-        ChainMapper.addMapper(job, VectorReaderMapper.class, LongWritable.class, Text.class, Text.class, Text.class, conf);
-
         // Multiple input paths: one for each Mapper
+        // No need to use job.setMapperClass()
         MultipleInputs.addInputPath(job, new Path(args[0]), TextInputFormat.class, MatrixReaderMapper.class);
         MultipleInputs.addInputPath(job, new Path(args[1]), TextInputFormat.class, VectorReaderMapper.class);
 
@@ -99,6 +94,8 @@ public class CellMultiplication extends Configured implements Tool {
 
     public static void main(String[] args) throws Exception {
         int exitCode = ToolRunner.run(new CellMultiplication(), args);
-        System.exit(exitCode);
+        if (exitCode == 1) {
+            System.exit(exitCode);
+        }
     }
 }

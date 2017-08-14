@@ -8,12 +8,14 @@ public class Driver {
         String matrixInputPath = args[0];
         String vectorInputPath = args[1];
         String subSumOutputPath = args[2];
-        String sumOutputpath = args[3];
+        String sumOutputPath = args[3];
 
+        // run the first job
         String[] cellMultiplicationArgs = {matrixInputPath, vectorInputPath, subSumOutputPath};
         multiplication.main(cellMultiplicationArgs);
 
-        String[] cellSumArgs = {subSumOutputPath, sumOutputpath};
+        // run the second job
+        String[] cellSumArgs = {subSumOutputPath, sumOutputPath};
         sum.main(cellSumArgs);
     }
 }

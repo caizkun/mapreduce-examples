@@ -7,18 +7,13 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.chain.ChainMapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
-import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CellSum extends Configured implements Tool {
 
@@ -50,7 +45,6 @@ public class CellSum extends Configured implements Tool {
         }
     }
 
-    @Override
     public int run(String[] args) throws Exception {
         if (args.length != 2) {
             System.err.printf("Usage: %s [generic options] <input> <output>\n", getClass().getSimpleName());
@@ -60,7 +54,7 @@ public class CellSum extends Configured implements Tool {
 
         Configuration conf = new Configuration();
 
-        Job job = Job.getInstance(conf, "Cell Multiplication");
+        Job job = Job.getInstance(conf, "Cell Sum");
         job.setJarByClass(CellSum.class);
         job.setMapperClass(SumMapper.class);
         job.setReducerClass(SumReducer.class);
@@ -74,7 +68,9 @@ public class CellSum extends Configured implements Tool {
     }
 
     public static void main(String[] args) throws Exception {
-        int exitCode = ToolRunner.run(new CellMultiplication(), args);
-        System.exit(exitCode);
+        int exitCode = ToolRunner.run(new CellSum(), args);
+        if (exitCode == 1) {
+            System.exit(exitCode);
+        }
     }
 }

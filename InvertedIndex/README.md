@@ -15,7 +15,11 @@ Reducer: sum up the count for each word
 #### Note 
 In this example, the driver implements the Tool interface and calls ToolRunner's static run() method to work in conjunction with GenericOptionsParser, which can parse the generic hadoop command-line arguments and modifies the Configuration of the Tool. 
 
-Although it is unnecessary in this example, this driver format is very useful for customizing Configuration at run time by supplying command-line arguments.
+Although it is unnecessary in this example, this driver format is very useful for customizing Configuration at run time by supplying command-line arguments. For example, the below command runs the program using two reduce tasks:
+```bash
+$ hadoop jar InvertedIndex.jar Driver -D mapreduce.job.reduces=2 /input /output
+``` 
+
 
 Reference: 
 - *Hadoop: The Definitive Guid* (4th edition) by Tom White, p.148-152

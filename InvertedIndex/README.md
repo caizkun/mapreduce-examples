@@ -1,15 +1,17 @@
 ## Inverted Index
 
-Problem: created an inverted index for looking up the words in files
+#### Problem
+created an inverted index for looking up the words in files
 
 
-Mapper: fetch the file name of each record and split the record into words
-- input: <offset, line>
-- output: <word, fileName>
+#### Workflow
+- Mapper: fetch the file name of each record and split the record into words  
+input: <offset, line>  
+output: <word, fileName>  
 
-Reducer: sum up the count for each word
-- input: <word, (file1, file2, file1, ...)>
-- output: <word, (file1=count1, file2=count2, ...)>
+- Reducer: sum up the count for each word  
+input: <word, (file1, file2, file1, ...)>  
+output: <word, (file1=count1, file2=count2, ...)>
 
 
 #### Note 

@@ -31,4 +31,4 @@ Here we show a toy example
 
 #### Note
 1. This example uses two MapReduce jobs, and the later takes the output of the former as the input. Note the dependency of input/output directories.
-2. In the first MapReduce job, two Mapper classes are used to read multiple input data, which is a good demo for the usage of **MultipleInputs**. 
+2. In the first MapReduce job, two Mapper classes are used to read multiple input data, which is a good demo for the usage of **MultipleInputs** class in package *org.apache.hadoop.mapreduce.lib.input*.

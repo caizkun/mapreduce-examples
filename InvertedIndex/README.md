@@ -22,5 +22,5 @@ $ hadoop jar InvertedIndex.jar Driver -D mapreduce.job.reduces=2 /input /output
 
 
 Reference: 
-- *Hadoop: The Definitive Guid* (4th edition) by Tom White, p.148-152
+- *Hadoop: The Definitive Guide* (4th edition) by Tom White, p.148-152
 - [Tool, ToolRunner in org.apache.hadoop.util](https://hadoop.apache.org/docs/stable/api/)

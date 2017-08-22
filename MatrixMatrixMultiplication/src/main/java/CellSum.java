@@ -20,8 +20,8 @@ public class CellSum extends Configured implements Tool {
     public static class SumMapper extends Mapper<LongWritable, Text, Text, DoubleWritable> {
         @Override
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            // input: <offset, line>, each line is: row subSum
-            // output: <row, subSum>
+            // input: <offset, line>, each line is: row:col subSum
+            // output: <row:col, subSum>
 
             String[] cell = value.toString().trim().split("\t");
             double subSum = Double.parseDouble(cell[1]);
@@ -32,8 +32,8 @@ public class CellSum extends Configured implements Tool {
     public static class SumReducer extends Reducer<Text, DoubleWritable, Text, DoubleWritable> {
         @Override
         public void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
-            // input: <row, (subSum1, subSum2, ...)>
-            // output: <row, subSum1+subSum2+...>
+            // input: <row:col, (subSum1, subSum2, ...)>
+            // output: <row\tcol, subSum1+subSum2+...>
 
             double sum = 0.0;
             for (DoubleWritable subSum : values) {
@@ -41,7 +41,10 @@ public class CellSum extends Configured implements Tool {
             }
             DecimalFormat df = new DecimalFormat("#.0000");
             sum = Double.valueOf(df.format(sum));
-            context.write(key, new DoubleWritable(sum));
+
+            String[] rowCol = key.toString().trim().split(":");
+            String outputKey = rowCol[0] + "\t" + rowCol[1];
+            context.write(new Text(outputKey), new DoubleWritable(sum));
         }
     }
 
@@ -52,8 +55,10 @@ public class CellSum extends Configured implements Tool {
             return -1;
         }
 
+        // create a configuration
         Configuration conf = new Configuration();
 
+        // create a job
         Job job = Job.getInstance(conf, "Cell Sum");
         job.setJarByClass(CellSum.class);
         job.setMapperClass(SumMapper.class);

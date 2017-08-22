@@ -5,13 +5,13 @@ public class Driver {
         CellSum sum = new CellSum();
 
         // parse args
-        String matrixInputPath = args[0];
-        String vectorInputPath = args[1];
+        String firstMatrixInputPath = args[0];
+        String secondMatrixInputPath = args[1];
         String subSumOutputPath = args[2];
         String sumOutputPath = args[3];
 
         // run the first job
-        String[] cellMultiplicationArgs = {matrixInputPath, vectorInputPath, subSumOutputPath};
+        String[] cellMultiplicationArgs = {firstMatrixInputPath, secondMatrixInputPath, subSumOutputPath};
         multiplication.main(cellMultiplicationArgs);
 
         // run the second job

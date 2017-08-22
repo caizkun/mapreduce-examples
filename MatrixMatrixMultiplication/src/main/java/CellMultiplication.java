@@ -18,7 +18,7 @@ import java.util.List;
 
 public class CellMultiplication extends Configured implements Tool {
 
-    public static class MatrixReaderMapper extends Mapper<LongWritable, Text, Text, Text> {
+    public static class FirstMatrixMapper extends Mapper<LongWritable, Text, Text, Text> {
         @Override
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             // input: <offset, line>, each line is: row col element
@@ -31,38 +31,51 @@ public class CellMultiplication extends Configured implements Tool {
         }
     }
 
-    public static class VectorReaderMapper extends Mapper<LongWritable, Text, Text, Text> {
+    public static class SecondMatrixMapper extends Mapper<LongWritable, Text, Text, Text> {
         @Override
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            // input: <offset, line>, each line is: row element
-            // output: <row, element>
+            // input: <offset, line>, each line is: row col element
+            // output: <row, col:element>
 
             String[] cell = value.toString().trim().split("\t");
-            context.write(new Text(cell[0]), new Text(cell[1]));
+            String row = cell[0];
+            String colVal = cell[1] + ":" + cell[2];
+            context.write(new Text(row), new Text(colVal));
         }
     }
 
     public static class CellReducer extends Reducer<Text, Text, Text, Text> {
         @Override
         public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-            // input: <col, row1=element1, row2=element2, ..., v>
-            // output: <row, element * v>
+            // The input aggregate the data with the same key from the two mappers
+            // input: <j, (i1=M1[i1][j], i2=M1[i2][j], ..., j1:M2[j][j1], j2:M2[j][j2], ...)>
+            // output: <i1:j2, M1[i1][j] * M2[j][j2]>
 
-            double vecCell = 0.0;
-            List<String> matrixRow = new ArrayList<String>();
-            for (Text value : values) {
-                String val = value.toString();
-                if (val.contains("=")) {
-                    matrixRow.add(val);
+            // separate the input from matrix1 and matrix2
+            List<String> matrix1Col = new ArrayList<String>();
+            List<String> matrix2Row = new ArrayList<String>();
+            for (Text val : values) {
+                String value = val.toString().trim();
+                if (value.contains("=")) {
+                    matrix1Col.add(value);
                 } else {
-                    vecCell = Double.parseDouble(val);
+                    matrix2Row.add(value);
                 }
             }
 
-            for (String rowVal : matrixRow) {
-                String row = rowVal.split("=")[0];
-                double value = Double.parseDouble(rowVal.split("=")[1]) * vecCell;
-                context.write(new Text(row), new Text(String.valueOf(value)));
+            // generate all pairs of (row from matrix1, col from matrix2)
+            for (String m1Col : matrix1Col) {
+                String row = m1Col.split("=")[0];
+                double element1 = Double.parseDouble(m1Col.split("=")[1]);
+
+                for (String m2Row : matrix2Row) {
+                    String col = m2Row.split(":")[0];
+                    double element2 = Double.parseDouble(m2Row.split(":")[1]);
+
+                    String outputKey = row + ":" + col;
+                    double outputValue = element1 * element2;
+                    context.write(new Text(outputKey), new Text(String.valueOf(outputValue)));
+                }
             }
         }
     }
@@ -74,8 +87,10 @@ public class CellMultiplication extends Configured implements Tool {
             return -1;
         }
 
+        // create a configuration
         Configuration conf = new Configuration();
 
+        // create a job
         Job job = Job.getInstance(conf, "Cell Multiplication");
         job.setJarByClass(CellMultiplication.class);
         job.setReducerClass(CellReducer.class);
@@ -84,8 +99,8 @@ public class CellMultiplication extends Configured implements Tool {
 
         // Multiple input paths: one for each Mapper
         // No need to use job.setMapperClass()
-        MultipleInputs.addInputPath(job, new Path(args[0]), TextInputFormat.class, MatrixReaderMapper.class);
-        MultipleInputs.addInputPath(job, new Path(args[1]), TextInputFormat.class, VectorReaderMapper.class);
+        MultipleInputs.addInputPath(job, new Path(args[0]), TextInputFormat.class, FirstMatrixMapper.class);
+        MultipleInputs.addInputPath(job, new Path(args[1]), TextInputFormat.class, SecondMatrixMapper.class);
 
         FileOutputFormat.setOutputPath(job, new Path(args[2]));
 

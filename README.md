@@ -6,7 +6,7 @@ MapReduce is the key programming model for data processing in the Hadoop ecosyst
     - [x] Word Count
     - [x] Inverted Index (demo. *Tool*, *ToolRunner*)
     - [x] Matrix-vector Multiplication (demo *MultipleInputs*)
-    - [ ] Matrix-matrix Multiplication
+    - [x] Matrix-matrix Multiplication
 
 - Filtering Patterns
     - [ ] Top K
@@ -17,5 +17,6 @@ MapReduce is the key programming model for data processing in the Hadoop ecosyst
 - Join Patterns
 
 - Metapatterns
-    - [ ] Autocomplete
-    - [ ] Page Rank
+    - [ ] NGramAutocomplete
+    - [ ] **Page Rank**
+    - [ ] **Recommender System**

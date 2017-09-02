@@ -16,7 +16,7 @@ Here we demonstrate using a toy example
         input: <offset, line>  
         output: <i2, j2:*M2*[i2][j2]>
     - Reducer: multiply a matrix1 cell with the corresponding matrix2 cell  
-        input: <k, (i1=*M1*[i1][k], i2=*M1*[i2][k], ..., j1=*M2*[k][j1], j2=*M2*[k][j2], ...)>  
+        input: <k, (i1=*M1*[i1][k], i2=*M1*[i2][k], ..., j1:*M2*[k][j1], j2:*M2*[k][j2], ...)>  
         output: <i:j, *M1*[i][k]**M2*[k][j]>
 
 2. CellSum: Mapper ---> Reducer

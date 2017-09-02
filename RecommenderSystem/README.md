@@ -1,4 +1,4 @@
-##  Movie Recommender System （Item-based Collaborative Filtering）
+##  Movie Recommender System (Item-based Collaborative Filtering)
 
 #### Problem
 Implement a movie recommender system using an item-based collaborative filtering method (IBCF) and the MapReduce paradigm

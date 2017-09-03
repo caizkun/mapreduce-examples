@@ -1,7 +1,7 @@
 ##  Movie Recommender System (Item-based Collaborative Filtering)
 
 #### Problem
-Implement a movie recommender system using an item-based collaborative filtering method (IBCF) and the MapReduce paradigm
+Implement a movie recommender system using an item-based collaborative filtering method (IBCF) and the MapReduce paradigm on Hadoop
 
 
 #### Algorithm
@@ -13,7 +13,7 @@ Implement a movie recommender system using an item-based collaborative filtering
 
 #### Workflow - 6 MapReduce jobs
 1. RatingDataReader: 
-    - Mapper: read the raw rating data which is in the format of "userId, movieId, rating"  
+    - Mapper: read the raw rating data which is in the format of "userId,movieId,rating"  
         input: <offset, userId,movieId,rating>  
         output: <userId, movieId:rating>  
     - Reducer: aggregate the rating data by userId  
@@ -22,9 +22,9 @@ Implement a movie recommender system using an item-based collaborative filtering
 
 2. CooccurrenceMatrixGenerator: 
     - Mapper: read the aggregated rating data  
-        input: <offset, userId \t movieId1:rating1,movieID2:rating2,...>  
+        input: <offset, userId \t movieId1:rating1,movieId2:rating2,...>  
         output: <movieIdi:movieIdj, 1>  
-    - Reducer: generated the cooccount the co-occurrence of each movieId pair  
+    - Reducer: generate the co-occurrence of each movieId pair  
         input: <movieIdi:movieIdj, (1, 1, ...)>  
         output: <movieIdi:movieIdj, 1+1+...>  
         
@@ -37,7 +37,7 @@ Implement a movie recommender system using an item-based collaborative filtering
         output: <movieIdj, movieIdi=countj/totalCount>  
 
 4. UserRatingAveraging:  
-    - Mapper: read the raw rating data which is in the format of "userId, movieId, rating"  
+    - Mapper: read the raw rating data which is in the format of "userId,movieId,rating"  
         input: <offset, userId,movieId,rating>
         output: <userId, rating>
     - Reducer: calculate the average rating given by a user  

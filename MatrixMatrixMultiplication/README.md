@@ -1,4 +1,4 @@
-## Matrix-Vector Multiplication
+## Matrix-Matrix Multiplication
 
 #### Problem
 Calculate the product of two matrixs *M1* and *M2* (both assumed sparse)

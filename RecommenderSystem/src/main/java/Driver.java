@@ -32,7 +32,7 @@ public class Driver {
         userRatingAveraging.main(job4Args);
 
         //job5: MatrixCellMultiplication.java
-        String[] job5Args = {cooccurrenceNormalizationPath, rawRatingDataInputPath, matrixCellMultiplicationPath, userAverageRatingPath};
+        String[] job5Args = {userAverageRatingPath, cooccurrenceNormalizationPath, rawRatingDataInputPath, matrixCellMultiplicationPath};
         matrixCellMultiplication.main(job5Args);
 
         // job6:s MatrixCellSum.java

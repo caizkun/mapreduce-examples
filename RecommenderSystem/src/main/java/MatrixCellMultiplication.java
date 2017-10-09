@@ -1,4 +1,6 @@
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -12,6 +14,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,16 +57,23 @@ public class MatrixCellMultiplication {
             // read the average rating for each user: HashMap<userId, averageRating>
 
             Configuration conf = context.getConfiguration();
-            String userAverageRatingPath = conf.get("userAverageRating", "");
+            String userAverageRatingPath = conf.get("userAverageRating", "userAverageRating");
 
-            BufferedReader br = new BufferedReader(new FileReader(userAverageRatingPath));
-            String line = br.readLine();
-            while (line != null) {
-                String[] user_rating = line.trim().split("\t");
-                user_averageRating_map.put(user_rating[0], Double.parseDouble(user_rating[1]));
-                line = br.readLine();
+            // list files in the path
+            FileSystem fs = FileSystem.get(conf);
+            Path pathPattern = new Path(userAverageRatingPath + "/part-r-*");
+            FileStatus[] statusList = fs.globStatus(pathPattern);
+
+            for (FileStatus status : statusList) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(status.getPath())));
+                String line = br.readLine();
+                while (line != null) {
+                    String[] user_rating = line.trim().split("\t");
+                    user_averageRating_map.put(user_rating[0], Double.parseDouble(user_rating[1]));
+                    line = br.readLine();
+                }
+                br.close();
             }
-            br.close();
         }
 
         @Override
@@ -113,6 +123,7 @@ public class MatrixCellMultiplication {
         }
 
         Configuration conf = new Configuration();
+        conf.set("userAverageRating", args[0]);     // user average rating data, used in reducer.setup()
         Job job = Job.getInstance(conf, "Matrix Cell Multiplication");
 
         job.setJarByClass(MatrixCellMultiplication.class);
@@ -120,11 +131,11 @@ public class MatrixCellMultiplication {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
 
-        MultipleInputs.addInputPath(job, new Path(args[0]), TextInputFormat.class, CooccurrenceCellMapper.class);
-        MultipleInputs.addInputPath(job, new Path(args[1]), TextInputFormat.class, UserRatingCellMapper.class);
-        conf.set("userAverageRating", args[3]);     // user average rating data
+        MultipleInputs.addInputPath(job, new Path(args[1]), TextInputFormat.class, CooccurrenceCellMapper.class);
+        MultipleInputs.addInputPath(job, new Path(args[2]), TextInputFormat.class, UserRatingCellMapper.class);
 
-        FileOutputFormat.setOutputPath(job, new Path(args[2]));
+        FileOutputFormat.setOutputPath(job, new Path(args[3]));
+
         job.waitForCompletion(true);
     }
 }

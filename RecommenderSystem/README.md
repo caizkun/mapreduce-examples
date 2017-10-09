@@ -1,4 +1,4 @@
-##  Movie Recommender System (Item-based Collaborative Filtering)
+##  Movie Recommender System
 
 #### Problem
 Implement a movie recommender system using an item-based collaborative filtering method (IBCF) and the MapReduce paradigm on Hadoop
@@ -48,11 +48,11 @@ Implement a movie recommender system using an item-based collaborative filtering
     - Mapper1: read the normalized co-occurrence matrix  
         input: <offset, movieIdk \t movieIdi=weighti>  
         output: <movieIdk, movieIdi=weighti>  
-    - Mapper2: generate the rating matrix by reading the raw rating data
+    - Mapper2: generate the rating matrix by reading the raw rating data  
         input: <offset, userId,movieId,rating>  
         output: <movieId, userId:rating>   
     - Reducer: multiply a cell of co-occurrence matrix with the corresponding cell of rating matrix  
-        **setup**: read the average rating for each user: HashMap<userId, averageRating>  
+        setup: read the average rating for each user: HashMap<userId, averageRating>  
         input: <movieIdk, (movieIdi1=weighti1, movieIdi2=weighti2, ..., userIdj1:ratingj1, userIdj2:ratingj2, ...)>  
         output: <userId:movieId, weight * rating>  
     
@@ -65,8 +65,17 @@ Implement a movie recommender system using an item-based collaborative filtering
         output: <userId:movieId, subRating1 + subRating2 + ...>  
         
 
+#### Usage:
+First copy this folder to HDFS and navigate to this folder, then follow commands below:
+```bash
+$ hdfs dfs -mkdir /input
+$ hdfs dfs -put ./input/* /input
+$ cd src/main/java
+$ hadoop com.sun.tools.javac.Main *.java
+$ jar cf recommender.jar *.class
+$ hadoop jar recommender.jar Driver /input /output/userRating /output/cooccurrenceGenerator /output/cooccurrenceNormal /output/userAverageRating /output/cellMultiplication /output/cellSum
+```
 
 #### Dataset:
 From the [Netflix Prize dataset](https://www.kaggle.com/netflix-inc/netflix-prize-data)
 
-#### Note:
